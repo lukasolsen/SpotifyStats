@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from models import DataModel
+from models.data import DataModel
 
 # Specify the relative path to the database file
 DATABASE_FILE = "your_database.db"
@@ -28,6 +28,7 @@ def create_tables():
             username TEXT,
             email TEXT,
             password TEXT,
+            disabled BOOLEAN,
             plan TEXT
         )
     """)
@@ -43,7 +44,7 @@ def create_tables():
             total_tracks INTEGER,
             total_albums INTEGER,
             total_artists INTEGER,
-            tracks TEXT,
+            tracks TEXT
         )
     """)
 
@@ -65,7 +66,7 @@ def get_table(table: str):
 
 
 def add_user(user_data: dict):
-    required_keys = ['username', 'email', 'password', "plan"]
+    required_keys = ['username', 'email', 'password', "disabled", "plan"]
     print(user_data)
 
     if not all(key in user_data for key in required_keys):
@@ -76,7 +77,7 @@ def add_user(user_data: dict):
     cursor = conn.cursor()
 
     cursor.execute(
-        "INSERT INTO users (username, email, password, plan) VALUES (:username, :email, :password, :plan)",
+        "INSERT INTO users (username, email, password, disabled, plan) VALUES (:username, :email, :password, :disabled, :plan)",
         user_data
     )
 

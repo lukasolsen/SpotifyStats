@@ -1,13 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://127.0.0.1:8000/api/v1/"; /*
-// add Access-Control-Allow-Origin *
-axios.defaults.headers.common["Content-Type"] = "application/json";
-axios.defaults.headers.common.Accept = "application/json";
-axios.defaults.headers.common["Access-Control-Allow-Origin"] = "localhost:5173";
+const API_URL = "http://127.0.0.1:8000/api/v1/";
 
-axios.defaults.headers.common["mode"] = "no-cors";
-*/
 export const register = (username: string, email: string, password: string) => {
   return axios
     .post(API_URL + "register", {
@@ -28,11 +22,21 @@ export const register = (username: string, email: string, password: string) => {
 
 export const login = (username: string, password: string) => {
   return axios
-    .post(API_URL + "login", {
-      username,
-      password,
-    })
+    .post(
+      API_URL + "token",
+      new URLSearchParams({
+        username: username, //gave the values directly for testing
+        password: password,
+        client_id: "0",
+      }),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    )
     .then((response) => {
+      console.log(response);
       if (response.data.accessToken) {
         localStorage.setItem(
           "token",
@@ -44,10 +48,23 @@ export const login = (username: string, password: string) => {
 };
 
 export const verifyToken = (token: string) => {
-  return axios.post(API_URL + "token?token=" + token, {}).then((response) => {
-    if (response.status === 401) {
-      //localStorage.removeItem("token");
-    }
-    return response;
-  });
+  return axios
+    .post(
+      API_URL + "verify-token",
+      {
+        client_id: "0",
+        token: token,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    )
+    .then((response) => {
+      if (response.status === 401) {
+        //localStorage.removeItem("token");
+      }
+      return response;
+    });
 };

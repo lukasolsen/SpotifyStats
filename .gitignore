@@ -1,3 +1,4 @@
 modeled.json
 server/your_database.db
 *.pyc
+*.env

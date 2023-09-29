@@ -1,14 +1,4 @@
 from pydantic import BaseModel
-from datetime import datetime
-from typing import Optional
-
-
-class UserModel(BaseModel):
-    username: str
-    email: str
-    password: str
-    plan: str
-    # Add more user-related fields here
 
 
 class DataModel(BaseModel):

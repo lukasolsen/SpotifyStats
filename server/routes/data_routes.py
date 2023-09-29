@@ -6,9 +6,9 @@ import os
 import tempfile
 import shutil
 import json
-from models import DataModel
+from models.data import DataModel
 from datetime import datetime
-from database import add_data, get_table
+from database.database import add_data, get_table
 
 router = APIRouter()
 

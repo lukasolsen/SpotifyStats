@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useAuth } from "./context/AuthContext";
 
-function App() {
+const App: React.FC = () => {
+  const { isLoggedIn } = useAuth();
   const [file, setFile] = useState<File | null>(null);
 
   const handleClick = async () => {
@@ -42,7 +44,7 @@ function App() {
 
           <div className="flex flex-row space-x-4 items-center mt-8">
             <a
-              href="/register"
+              href={isLoggedIn ? "/dashboard" : "/register"}
               className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md w-6/12 text-center mx-auto"
             >
               Get Started
@@ -123,6 +125,6 @@ function App() {
       </div>
     </>
   );
-}
+};
 
 export default App;

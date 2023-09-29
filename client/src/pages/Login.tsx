@@ -17,6 +17,7 @@ const Login: React.FC = () => {
     response.then((data) => {
       if (data.status === 200) {
         console.log("Login successful");
+        localStorage.setItem("token", data.data.access_token);
         window.location.href = "/";
       }
     });
