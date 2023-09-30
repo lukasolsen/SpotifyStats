@@ -68,3 +68,18 @@ export const verifyToken = (token: string) => {
       return response;
     });
 };
+
+export const fileUpload = (file: File) => {
+  const formData = new FormData();
+  formData.append("in_file", file);
+  return axios
+    .post(API_URL + "upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+    .then((response) => {
+      return response;
+    });
+};

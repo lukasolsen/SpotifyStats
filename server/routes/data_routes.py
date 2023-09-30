@@ -1,4 +1,4 @@
-from fastapi import APIRouter, File, UploadFile
+from fastapi import APIRouter, File, UploadFile, Depends
 from pathlib import Path
 from fastapi.responses import JSONResponse
 import zipfile
@@ -7,14 +7,16 @@ import tempfile
 import shutil
 import json
 from models.data import DataModel
+from models.user import User
+from auth.dependencies import get_current_user
 from datetime import datetime
 from database.database import add_data, get_table
 
 router = APIRouter()
 
 
-@router.post("/upload/")
-async def upload_file(in_file: UploadFile = File(...)):
+@router.post("/upload")
+async def upload_file(in_file: UploadFile = File(...), current_user: User = Depends(get_current_user)):
     try:
         # Create a temporary directory to extract the contents of the zip file
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -40,9 +42,8 @@ async def upload_file(in_file: UploadFile = File(...)):
                             "offline_seconds": 0, "online_seconds": 0,
                             "total_tracks": 0, "total_albums": 0, "total_artists": 0,
                             "most_played_track": "", "most_played_track_count": 0}
-
             data_summary = {
-                "user_id": 1,
+                "user_id": current_user.get("id"),
                 "timestamp": datetime.today().strftime('%Y-%m-%dT%H:%M:%SZ'),
                 "total_seconds_played": 0,
                 "offline_seconds": 0,

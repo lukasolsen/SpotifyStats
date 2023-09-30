@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "./context/AuthContext";
+import { FaFileImport, FaChartBar } from "react-icons/fa";
 
 const App: React.FC = () => {
   const { isLoggedIn } = useAuth();
@@ -42,14 +43,37 @@ const App: React.FC = () => {
             Spotify statistics.
           </p>
 
-          <div className="flex flex-row space-x-4 items-center mt-8">
-            <a
-              href={isLoggedIn ? "/dashboard" : "/register"}
-              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md w-6/12 text-center mx-auto"
-            >
-              Get Started
-            </a>
-          </div>
+          {!isLoggedIn && (
+            <div className="flex flex-row space-x-4 items-center mt-8">
+              <a
+                href={"/register"}
+                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md w-6/12 text-center mx-auto"
+              >
+                Get Started
+              </a>
+            </div>
+          )}
+
+          {/* Display things such as 2 buttons for importing file, and going to dashboard */}
+          {isLoggedIn && (
+            <div className="flex flex-row space-x-4 items-center mt-8 justify-evenly">
+              <a
+                href={"/import"}
+                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-center flex flex-row items-center"
+              >
+                <FaFileImport className="mr-2" />
+                Import File
+              </a>
+
+              <a
+                href={"/dashboard"}
+                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-center flex flex-row items-center"
+              >
+                <FaChartBar className="mr-2" />
+                Go to Dashboard
+              </a>
+            </div>
+          )}
         </div>
         <div className="w-6/12 flex flex-row justify-end items-center space-x-4">
           {/* Animated SVG */}
