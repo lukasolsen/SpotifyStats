@@ -83,3 +83,17 @@ export const fileUpload = (file: File) => {
       return response;
     });
 };
+
+export const getCurrentUser = () => {
+  const token = localStorage.getItem("token");
+
+  return axios
+    .get(API_URL + "users/me", {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+    .then((response) => {
+      return response;
+    });
+};

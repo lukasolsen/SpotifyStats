@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { verifyToken } from "../service/api.service";
+import { getCurrentUser, verifyToken } from "../service/api.service";
 
 // Create a new context
 type AuthContextType = {
@@ -28,7 +28,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (data.status === 200) {
           console.log("Logged in");
           setIsLoggedIn(true);
-          setUserDetails(data.data);
+          // Use another api in order to get the user details
+          getCurrentUser().then((data) => {
+            if (!data) return;
+            if (data.status === 200) {
+              setUserDetails(data.data);
+            }
+          });
         } else {
           setIsLoggedIn(false);
         }
